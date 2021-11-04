@@ -1,15 +1,14 @@
 # Code Covention
 
 ### Naming
-- class나 function은 carmel case로 작성하고 동사를 사용한다.
+- class는 pascal case로 작성하고 동사를 사용한다.
 - 대문자로 시작한다.
 ```py
 #example
 class SetConvention():
-  def Write(self):
     pass
 ```
-- 변수명은 snake case로 작성하고 명사를 사용한다.
+- 변수명이나 함수명은 snake case로 작성하고 변수명은 명사를 사용한다.
 - 소문자로 시작한다.
 ```py
 #example
@@ -24,6 +23,9 @@ second_num      = 2
 third_num       = 3
 one_hundred_num = 100
 ```
+
+- 변수 할당 앞 뒤에 공백을 하나씩 추가한다.
+- 괄호 안에서는 붙인다.
 
 ### Imports
 - import는 한줄에 하나씩만 쓴다.
