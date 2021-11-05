@@ -29,19 +29,19 @@ class LogInTest(TestCase):
         self.access_token_1 = jwt.encode({
             "id"   : user_1.id,
             "role" : user_1.role.id,
-            "exp"  : datetime.utcnow() + timedelta(seconds=120)
+            "exp"  : datetime.utcnow() + timedelta(hours=6)
         }, MY_SECRET_KEY, algorithm="HS256")
 
         self.access_token_2 = jwt.encode({
             "id"   : user_2.id,
             "role" : user_2.role.id,
-            "exp"  : datetime.utcnow() + timedelta(seconds=120)
+            "exp"  : datetime.utcnow() + timedelta(hours=6)
         }, MY_SECRET_KEY, algorithm="HS256")
 
         self.invalid_token = jwt.encode({
             "id"   : user_1.id,
             "role" : 5,
-            "exp"  : datetime.utcnow() + timedelta(seconds=120)
+            "exp"  : datetime.utcnow() + timedelta(hours=6)
         }, MY_SECRET_KEY, algorithm="HS256")
 
     def tearDown(self):
