@@ -139,7 +139,7 @@ class MenuListView(APIView):
                     "name": menu.name,
                     "description": menu.description,
                     "is_sold": menu.is_sold,
-                    "badge": menu.badge.name,
+                    "badge": menu.badge.name if menu.badge is not None else None,
                     "items": [
                         {
                             "id": item.id,
