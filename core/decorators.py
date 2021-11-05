@@ -10,11 +10,11 @@ def authorizer(func):
     def wrapper(self, request, *args, **kwagrs):
         try:
             access_token = request.headers.get("Authorization")
-            
+
             if not access_token:
                 return JsonResponse({"message": "Not Found Access_token"}, status=403)
-            
-            payload = decode(access_token, MY_SECRET_KEY, algorithm="HS256")
+
+            payload = decode(access_token, MY_SECRET_KEY, algorithms="HS256")
             user_id = payload["id"]
             role_id = payload["role"]
 
@@ -27,7 +27,6 @@ def authorizer(func):
                 return JsonResponse({"message": "Invalid User"}, status=401)
 
             request.user = user
-            request.role = role_id
 
         except exceptions.DecodeError:
             return JsonResponse({"message": "Invalid Token"}, status=403)
@@ -38,9 +37,3 @@ def authorizer(func):
         return func(self, request, *args, **kwagrs)
 
     return wrapper
-
-        
-
-        
-
-        
