@@ -30,6 +30,41 @@ class MenuDetailView(APIView):
         except KeyError:
             return JsonResponse({"message": "KEY_ERROR"}, status=400)
 
+
+    def get(self, request, menu_id):
+        
+        if not Menu.objects.filter(id=menu_id).exists():
+            return JsonResponse({"message": f"POSTING_{menu_id}_NOT_FOUND"}, status=404)
+        
+        product = Menu.objects.get(id=menu_id)
+        
+        menus = {
+            "id"          : product.id,
+            "category"    : product.category.name,
+            "name"        : product.name,
+            "description" : product.description,
+            "isSold"      : product.is_sold,
+            "badge"       : product.badge.name if product.badge is not None else None,
+            "items" : [
+                {
+                    "item"   : item.id,
+                    "memuID" : item.menu.id,
+                    "size"   : item.size.name,
+                    "price"  : item.price,
+                    "isSold" : item.is_sold,
+                    } for item in product.item_set.all()],
+            "tags" : [
+                {
+                    "id"     : product.tag.id,
+                    "menuID" : product.id,
+                    "type"   : product.tag.type,
+                    "name"   : product.tag.name
+                }
+            ]
+        }
+        
+        return JsonResponse({"menus": menus}, status=200)
+
     def delete(self, request, menu_id):
         try:
             menu   = Menu.objects.get(id=menu_id)
