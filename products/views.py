@@ -3,7 +3,7 @@ import json
 from rest_framework.views import APIView
 from django.http          import JsonResponse
 
-from .models import Menu, Category, Badge, Tag
+from .models import Menu, Category, Badge, Tag, Item
 
 
 class MenuDetailView(APIView):
@@ -81,6 +81,34 @@ class MenuDetailView(APIView):
         except Menu.DoesNotExist:
             return JsonResponse({"message": f"Menu {menu_id} not found"}, status=404)
 
+    def put(self, request, menu_id):
+        try:
+            if not Menu.objects.filter(id=menu_id).exists():
+                return JsonResponse({"message": f"POSTING_{menu_id}_NOT_FOUND"}, status=404)
+            
+            data = json.loads(request.body)
+
+            if not (data["name"] or data["description"]):
+                return JsonResponse({"message": "Fill_In_All_Values"}, status=404)
+            
+            menu = Menu.objects.get(id=menu_id)
+            
+            if data["name"]:
+                menu.name = data["name"]
+            
+            if data["description"]:
+                menu.description = data["description"]
+
+            menu.save()
+
+            return JsonResponse({"menu name": menu.name, "menu_desc": menu.description}, status=200)
+
+        except KeyError:
+            return JsonResponse({"message": "KEY_ERROR"}, status=400)
+
+        except Category.DoesNotExist:
+            return JsonResponse({"message": "Category Does not Exist"}, status=404)
+
 
 class MenuListView(APIView):
     def get(self, request):
@@ -127,3 +155,39 @@ class MenuListView(APIView):
         }
 
         return JsonResponse(menus, status=200)
+
+
+class MenuItemsView(APIView):
+    def put(self, request):
+        try:
+            data = json.loads(request.body)
+            
+            if not Menu.objects.filter(id=data["menu_id"]).exists():
+                return JsonResponse({"message": "MENU_NOT_FOUND"}, status=404)
+
+            if not Item.objects.filter(id=data["id"]).exists():
+                return JsonResponse({"message": "ITEMS_NOT_FOUND"}, status=404)
+
+            if not (data["id"] or data["name"] or data["price"] or data["menu_id"]):
+                return JsonResponse({"message": "Fill_In_All_Values"}, status=404)
+            
+            item = Item.objects.get(menu__id=data["menu_id"], id=data["id"])
+            
+            if data["size"]:
+                if not Item.objects.filter(size__name=data["size"]).first():
+                    return JsonResponse({"message": "SIZE_NOT_FOUND"}, status=404)
+
+                item.size.name = data["size"]
+
+            if data["price"]:
+                item.price = data["price"]
+
+            item.save()
+
+            return JsonResponse({"item size": item.size.name, "item price": item.price}, status=200)
+
+        except KeyError:
+            return JsonResponse({"message": "KEY_ERROR"}, status=400)
+
+        except ValueError:
+            return JsonResponse({"message": "Value Error"}, status=404)
