@@ -76,67 +76,67 @@
 <hr>
 
 # API 명세서
-[Postman API]()
+[Postman API](https://documenter.getpostman.com/view/16088238/UVC2J9qZ#a3d9020e-61f3-4e69-aca7-e92e6157d57b)
 
 ### 유저 로그인
 - Method: POST
 ```
-http://{url}/users/sign-in
+http://3.36.59.83:8000/users/sign-in
 ```
 - parameter : request_body
 ```
 {
-    "email" : "",
-    "password" : "",
+    "email" : "abc123@gmail.com",
+    "password" : "qwerty135!@",
 }
 ```
 
 ### 상품 추가
 - Method: POST
 ```
-http://{url}/products
+http://3.36.59.83:8000/products
 ```
 - parameter : request_body
 ```
 {
-    "category" : "샐러드",
-    "badge" : "",
-    "tag" : "",
+    "category" : "SALAD",
+    "badge" : "NEW",
+    "tag" : "VEGAN",
 }
 ```
 
 ### 상품 조회
 - Method: GET
 ```
-http://{url}/products/1
+http://3.36.59.83:8000/products/1
 ```
 - parameter : path_parameter
 
 ### 상품 수정(이름, 설명)
 - Method: PUT
 ```
-http://{url}/products/1
+http://3.36.59.83:8000/products/1
 ```
 - parameter : path_parameter
 
 ### 상품 삭제
 - Method: DELETE
 ```
-http://{url}/products/1
+http://3.36.59.83:8000/products/1
 ```
 - parameter : path_parameter
 
 ### 상품 목록 조회
 - Method: GET
 ```
-http://{url}/list/offset=0&limit=5
+http://3.36.59.83:8000/list?limit=5&offset=0
 ```
 - parameter : query_parameter
 
 ### 아이템 수정(가격, 사이즈) 
 - Method: PUT
 ```
-http://{url}/item/1
+http://3.36.59.83:8000/item/1
 ```
 - parameter : path_parameter
 
@@ -154,7 +154,17 @@ conda create -n fresh-code python=3.8
 conda actvate fresh-code
 pip install -r requirements.txt
 ```
-4. 
+4. makemigrations 후 로컬 서버 가동
+```
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
+```
+
+### 로컬 및 테스트용
+```
+docker build -t <docker 계정명>/<이미지명>:<버전> .
+```
 
 <hr>
 
@@ -209,16 +219,7 @@ pip install -r requirements.txt
 
 <hr>
 
-# 구현 기능
-### 로그인 기능
--  
--
 
-### 상품개발 기능
-- 
-- 
-
-<hr>
 
 
 
