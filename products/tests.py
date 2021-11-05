@@ -223,7 +223,7 @@ class MenuDetailViewTest(TestCase):
         )
 
         self.assertEqual(response.status_code, 401)
-        self.assertEqual(response.json(), {"message": "Unauthorized"})
+        self.assertEqual(response.json(), {"message": "UNAUTHORIZED"})
 
     def test_post_menu_not_found_access_token(self):
         data = {
@@ -325,7 +325,7 @@ class MenuDetailViewTest(TestCase):
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
             response.json(),
-            {"message": "Unauthorized"},
+            {"message": "UNAUTHORIZED"},
         )
 
     def test_delete_menu_does_not_exist(self):
@@ -336,7 +336,7 @@ class MenuDetailViewTest(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
             response.json(),
-            {"message": "Menu 3 not found"},
+            {"message": "MENU_3_NOT_FOUND"},
         )
 
     def test_put_menu_success(self):
@@ -370,7 +370,7 @@ class MenuDetailViewTest(TestCase):
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
             response.json(),
-            {"message": "Unauthorized"},
+            {"message": "UNAUTHORIZED"},
         )
 
     def test_put_menu_not_found(self):
@@ -438,7 +438,7 @@ class MenuDetailViewTest(TestCase):
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
             response.json(),
-            {"message": "Unauthorized"},
+            {"message": "UNAUTHORIZED"},
         )
     
     def test_put_menu_item_no_input(self):
@@ -455,7 +455,7 @@ class MenuDetailViewTest(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
             response.json(),
-            {"message": "No input"},
+            {"message": "NO_INPUT"},
         )
     
     def test_put_menu_item_value_error(self):
@@ -472,7 +472,7 @@ class MenuDetailViewTest(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
             response.json(),
-            {"message": "Value Error"},
+            {"message": "VALUE_ERROR"},
         )
 
     def test_put_menu_item_does_not_exist(self):
