@@ -37,7 +37,7 @@ class LogInView(APIView):
         access_token = jwt.encode({
             'id'   : user.id, 
             'role' : user.role_id, 
-            'exp'  :datetime.utcnow() + timedelta(seconds=120)
+            'exp'  :datetime.utcnow() + timedelta(hours=6)
             }, MY_SECRET_KEY, algorithm="HS256")
 
         return JsonResponse({"message": "SUCCESS", "token": access_token}, status=200)
