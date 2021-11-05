@@ -2,7 +2,7 @@ from jwt import exceptions, decode
 
 from django.http import JsonResponse
 
-from my_settings  import MY_SECRET_KEY
+from my_settings import MY_SECRET_KEY
 from users.models import User
 
 
