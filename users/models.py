@@ -10,6 +10,8 @@ class Role(models.Model):
 
     name = models.CharField(max_length=16)
 
+    objects = CustomModelManager()
+
     class Meta:
         db_table = "roles"
 
