@@ -1,5 +1,7 @@
 from django.db import models
 
+from core.models import TimeStamp
+
 
 class Category(models.Model):
     name = models.CharField(max_length=32)
@@ -23,7 +25,7 @@ class Tag(models.Model):
         db_table = "tags"
 
 
-class Menu(models.Model):
+class Menu(TimeStamp):
     name        = models.CharField(max_length=32)
     category    = models.ForeignKey(Category, on_delete=models.CASCADE)
     description = models.CharField(max_length=128)
@@ -46,7 +48,7 @@ class Size(models.Model):
         db_table = "sizes"
 
 
-class Item(models.Model):
+class Item(TimeStamp):
     menu    = models.ForeignKey(Menu, on_delete=models.CASCADE)
     size    = models.ForeignKey(Size, on_delete=models.PROTECT)
     price   = models.PositiveIntegerField()
