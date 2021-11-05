@@ -13,7 +13,7 @@ class MenuDetailView(APIView):
     def post(self, request):
         try:
             if request.user.role_id != Role.Type.ADMIN.value:
-                return JsonResponse({"message": "Unauthorized"}, status = 401)
+                return JsonResponse({"message": "UNAUTHORIZED"}, status = 401)
             
             data = json.loads(request.body)
 
@@ -41,15 +41,15 @@ class MenuDetailView(APIView):
         if not Menu.objects.filter(id=menu_id).exists():
             return JsonResponse({"message": f"POSTING_{menu_id}_NOT_FOUND"}, status=404)
         
-        product = Menu.objects.get(id=menu_id)
+        menu = Menu.objects.get(id=menu_id)
         
         menus = {
-            "id"          : product.id,
-            "category"    : product.category.name,
-            "name"        : product.name,
-            "description" : product.description,
-            "isSold"      : product.is_sold,
-            "badge"       : product.badge.name if product.badge is not None else None,
+            "id"          : menu.id,
+            "category"    : menu.category.name,
+            "name"        : menu.name,
+            "description" : menu.description,
+            "isSold"      : menu.is_sold,
+            "badge"       : menu.badge.name if menu.badge is not None else None,
             "items" : [
                 {
                     "item"   : item.id,
@@ -57,13 +57,13 @@ class MenuDetailView(APIView):
                     "size"   : item.size.name,
                     "price"  : item.price,
                     "isSold" : item.is_sold,
-                    } for item in product.item_set.all()],
+                    } for item in menu.item_set.all()],
             "tags" : [
                 {
-                    "id"     : product.tag.id,
-                    "menuID" : product.id,
-                    "type"   : product.tag.type,
-                    "name"   : product.tag.name
+                    "id"     : menu.tag.id,
+                    "menuID" : menu.id,
+                    "type"   : menu.tag.type,
+                    "name"   : menu.tag.name
                 }
             ]
         }
@@ -74,7 +74,7 @@ class MenuDetailView(APIView):
     def delete(self, request, menu_id):
         try:
             if request.user.role_id != Role.Type.ADMIN.value:
-                return JsonResponse({"message": "Unauthorized"}, status = 401)
+                return JsonResponse({"message": "UNAUTHORIZED"}, status = 401)
 
             menu   = Menu.objects.get(id=menu_id)
             result = menu.delete()
@@ -84,17 +84,17 @@ class MenuDetailView(APIView):
                     "message": f"{menu.name} has successfully deleted",
                     "result": f"{result[0]} rows has affected",
                 },
-                status=204,
+                status=200,
             )
 
         except Menu.DoesNotExist:
-            return JsonResponse({"message": f"Menu {menu_id} not found"}, status=404)
+            return JsonResponse({"message": f"MENU_{menu_id}_NOT_FOUND"}, status=404)
 
     @authorizer
     def put(self, request, menu_id):
         try:
             if request.user.role_id != Role.Type.ADMIN.value:
-                return JsonResponse({"message": "Unauthorized"}, status = 401)
+                return JsonResponse({"message": "UNAUTHORIZED"}, status = 401)
 
             if not Menu.objects.filter(id=menu_id).exists():
                 return JsonResponse({"message": f"POSTING_{menu_id}_NOT_FOUND"}, status=404)
@@ -114,7 +114,7 @@ class MenuDetailView(APIView):
 
             menu.save()
 
-            return JsonResponse({"menu name": menu.name, "menu_desc": menu.description}, status=200)
+            return JsonResponse({"menu name": menu.name, "menu desc": menu.description}, status=200)
 
         except KeyError:
             return JsonResponse({"message": "KEY_ERROR"}, status=400)
@@ -172,14 +172,14 @@ class MenuItemsView(APIView):
     def put(self, request, item_id):
         try:
             if request.user.role_id != Role.Type.ADMIN.value:
-                return JsonResponse({"message": "Unauthorized"}, status = 401)
+                return JsonResponse({"message": "UNAUTHORIZED"}, status = 401)
 
             data = json.loads(request.body)
             
             item = Item.objects.get(id=item_id)
 
             if not (data["price"] or data["size"]):
-                return JsonResponse({"message": "No input"}, status=404)
+                return JsonResponse({"message": "NO_INPUT"}, status=404)
 
             if data["price"]:
                 item.price = data["price"]
@@ -195,7 +195,7 @@ class MenuItemsView(APIView):
             return JsonResponse({"message": "KEY_ERROR"}, status=400)
 
         except ValueError:
-            return JsonResponse({"message": "Value Error"}, status=404)
+            return JsonResponse({"message": "VALUE_ERROR"}, status=404)
 
         except Item.DoesNotExist:
             return JsonResponse({"message": "ITEMS_NOT_FOUND"}, status=404)
