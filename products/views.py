@@ -125,13 +125,13 @@ class MenuListView(APIView):
         OFFSET = int(request.GET.get("offset", 0))
         LIMIT  = int(request.GET.get("limit", 10))
 
-        menus = (
+        menus  = (
             Menu.objects.prefetch_related("item_set")
             .all()
             .order_by("-created_time")[OFFSET : OFFSET + LIMIT]
         )
 
-        menus = {
+        menus  = {
             "menus": [
                 {
                     "id": menu.id,
