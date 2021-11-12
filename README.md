@@ -4,9 +4,10 @@
 - [프레시코드 사이트](https://www.freshcode.me/) 
 - [wanted 채용공고 링크](https://www.wanted.co.kr/wd/34118) 
 
-<hr>
+<br>
+<br>
 
-# 목차
+# 🔖 목차
 - Team 소개
 - 과제 내용
 - 기술 환경 및 tools
@@ -15,22 +16,24 @@
 - 설치 및 실행 방법
 
 
-<hr>
+<br>
+<br>
 
-# Team 소개
+# 🧑‍🤝‍🧑 Team 소개
 
 | 이름 | 담당 기능 | 블로그 |
 | :---: | :---: | :---: | 
 | 공통 | 초기환경 설정, DB 모델링, postman api 문서 작성, README.md 작성, 배포 | X |
-| 손희정 | 상품 관리 기능 |  |
-| 송치헌 | 로그인 기능 | |
-| 유동헌 | 상품 관리 기능 | |
-| 하예준 | 상품 관리 기능 | |
-| 오지윤(팀장) | 로그인 기능 | |
+| [손희정](https://github.com/heejung-gjt) | 상품 관리 기능 |  |
+| [송치헌](https://github.com/Oraange) | 로그인 기능 | |
+| [유동헌](https://github.com/dhhyy) | 상품 관리 기능 | |
+| [하예준](https://github.com/TedJunny) | 상품 관리 기능 | |
+| [오지윤(팀장)](https://github.com/Odreystella) | 로그인 기능 | https://bit.ly/3qxEQNu|
 
-<hr>
+<br>
+<br>
 
-# 과제 내용
+# 📖 과제 내용
 > 아래 요구사항에 맞춰 상품 관리 Restfull API를 개발합니다.
 ### **[필수 포함 사항]**
 
@@ -49,99 +52,352 @@
 
 ### **[기능 개발]**
 - 로그인 기능
-  - JWT 인증 방식 이용
-  - Authorization 키의 값이 없거나 인증 실패시 적절한 Error Handling
-  - 권한 부여 후, 권한에 따른 상품 관리(추가/수정/삭제)
-- 상품 관리 기능
-  - 상품 조회 기능(하나 또는 전체 목록)
-  - 전체 목록 조회 시 한 페이지당 5개의 아이템 페이징 처리
-  - 관리자 권한만 상품 추가/수정/삭제 가능
-  - 적절한 Error Handling
+   - JWT 인증 방식 이용
+   - Authorization 키의 값이 없거나 인증 실패시 적절한 Error Handling
+   - 권한 부여 후, 권한에 따른 상품 관리(추가/수정/삭제)
+ - 상품 관리 기능
+   - 상품 조회 기능(하나 또는 전체 목록)
+   - 전체 목록 조회 시 한 페이지당 5개의 아이템 페이징 처리
+   - 관리자 권한만 상품 추가/수정/삭제 가능
+   - 적절한 Error Handling
 
-<hr>
+<br>
 
-# 🔖 기술 환경 및 tools
+# ➡️ Build(AWS EC2)
+API URL : http://3.36.59.83:8000/
+
+<br>
+<br>
+
+# ⚒️ 기술 환경 및 tools
 - Back-End: python 3.8.12, Django 3.2.9, MySQL
 - Deploy: AWS EC2, RDS
 - ETC: Git, Github, Postman
 
-<hr>
+<br>
 
-# 🔖 모델링 ERD
+# 📋 모델링 ERD
 
 <img src="images/fresh_code_erd.png" />
 
 - 추후 서비스 확장을 고려하여 Badge, Size, Tag 테이블을 별도로 두어 Item, Menu 테이블에서 FK로 사용하였습니다.
 
-<hr>
+<br>
 
-# API 명세서
-[Postman API](https://documenter.getpostman.com/view/16088238/UVC2J9qZ#a3d9020e-61f3-4e69-aca7-e92e6157d57b)
+# 🔖 API 명세서
+[Postman API Document 보러가기](https://documenter.getpostman.com/view/16088238/UVC2J9qZ#a3d9020e-61f3-4e69-aca7-e92e6157d57b)
 
-### 유저 로그인
+<br>
+
+### 👉 유저 로그인
+
+1. 유저 로그인 시 이메일/패스워드를 body에 담아 요청합니다.
+2. 유저의 이메일과 패스워드를 검증 후 유효하지 않는 경우 에러 메시지를 반환합니다.
+3. 유효한 유저인 경우 유저의 token을 반환합니다.
+
 - Method: POST
 ```
 http://3.36.59.83:8000/users/sign-in
 ```
+
 - parameter : request_body
 ```
 {
-    "email" : "abc123@gmail.com",
+    "email"    : "abc123@gmail.com",
     "password" : "qwerty135!@",
 }
 ```
 
-### 상품 추가
-- Method: POST
-```
-http://3.36.59.83:8000/products
-```
-- parameter : request_body
+- response
 ```
 {
-    "category" : "SALAD",
-    "badge" : "NEW",
-    "tag" : "VEGAN",
+    "message": "SUCCUESS",
+    "token"  : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwicm9sZSI6MSwiZXhwIjoxNjM2MTcxNjAxfQ.bMXiqp9nnhXkNGMxXCJYX6xj5rvdEqUFgCe25JYMsGo"
 }
 ```
 
-### 상품 조회
+### 👉 상품 추가
+
+1. 인증된 유저 중 admin 계정만이 상품을 추가할 수 있습니다.
+2. 헤더에 토큰과 상품 이름, 카테고리, 설명, 뱃지, 태그를 body에 담아 요청합니다.
+3. 유저의 role을 검증 후 유효하지 않는 경우 에러 메시지를 반환합니다.
+4. 유효한 유저인 경우 성공 메시지를 반환합니다.
+
+- Method: POST
+
+```
+http://3.36.59.83:8000/products
+```
+
+- header : Bearer token
+
+- parameter : request_body
+```
+{
+    "name"        : "망고 샐러드",
+    "category"    : "SALAD",
+    "description" : "망고 담긴 샐러드",
+    "badge"       : "NEW",
+    "tag"         : "유제품"
+}
+```
+
+- response
+```
+{
+    "message": "들기름 메밀면 has successfully posted"
+}
+```
+
+### 👉 상품 목록 조회
+
+1. offset limit 페이징 처리 후 해당 페이지의 상품을 반환합니다.
+
 - Method: GET
-```
-http://3.36.59.83:8000/products/1
-```
-- parameter : path_parameter
 
-### 상품 수정(이름, 설명)
-- Method: PUT
 ```
-http://3.36.59.83:8000/products/1
+http://3.36.59.83:8000/list?limit=5&offset=1
 ```
-- parameter : path_parameter
 
-### 상품 삭제
-- Method: DELETE
-```
-http://3.36.59.83:8000/products/1
-```
-- parameter : path_parameter
-
-### 상품 목록 조회
-- Method: GET
-```
-http://3.36.59.83:8000/list?limit=5&offset=0
-```
 - parameter : query_parameter
 
-### 아이템 수정(가격, 사이즈) 
+- response
+```
+{
+   {
+    {
+  "menus": [
+    {
+      "id": 5,
+      "category": "SALAD",
+      "name": "메밀면 샐러드",
+      "description": "숯불에 구운 메밀면",
+      "is_sold": false,
+      "badge": "NEW",
+      "items": [
+        {
+          "id": 13,
+          "menu_id": 5,
+          "name": "라지",
+          "size": "L",
+          "price": 10000,
+          "is_sold": false
+        },
+        {
+          "id": 14,
+          "menu_id": 5,
+          "name": "미디움",
+          "size": "M",
+          "price": 8000,
+          "is_sold": false
+        },
+        {
+          "id": 15,
+          "menu_id": 5,
+          "name": "스몰",
+          "size": "S",
+          "price": 5000,
+          "is_sold": false
+        }
+      ],
+      "tags": [
+        {
+          "id": 1,
+          "menu_id": 5,
+          "type": "vegetarianism",
+          "name": "페스코베지테리언"
+        }
+      ]
+    },
+    
+    ...
+    
+   {
+      "id": 1,
+      "category": "SALAD",
+      "name": "요거트샐러드",
+      "description": "맛있는 요거트 샐러드",
+      "is_sold": false,
+      "badge": "NEW",
+      "items": [
+        {
+          "id": 1,
+          "menu_id": 1,
+          "name": "미디움",
+          "size": "M",
+          "price": 3000,
+          "is_sold": false
+        },
+        {
+          "id": 2,
+          "menu_id": 1,
+          "name": "미디움",
+          "size": "M",
+          "price": 12000,
+          "is_sold": false
+        },
+        {
+          "id": 3,
+          "menu_id": 1,
+          "name": "스몰",
+          "size": "S",
+          "price": 9000,
+          "is_sold": false
+        }
+      ],
+      "tags": [
+        {
+          "id": 2,
+          "menu_id": 1,
+          "type": "dairy",
+          "name": "유제품"
+        }
+      ]
+    }
+}
+
+```
+
+### 👉 상품 조회
+
+1. 선택한 상품의 상세 정보를 조회합니다.
+
+- Method: GET
+
+```
+http://3.36.59.83:8000/products/5
+```
+
+- parameter : path_parameter
+
+- response
+```
+{
+  "menus": {
+    "id": 5,
+    "category": "SALAD",
+    "name": "메밀면 샐러드",
+    "description": "숯불에 구운 메밀면",
+    "isSold": false,
+    "badge": "NEW",
+    "items": [
+      {
+        "item": 13,
+        "memuID": 5,
+        "size": "라지",
+        "price": 10000,
+        "isSold": false
+      },
+      {
+        "item": 14,
+        "memuID": 5,
+        "size": "미디움",
+        "price": 8000,
+        "isSold": false
+      },
+      {
+        "item": 15,
+        "memuID": 5,
+        "size": "스몰",
+        "price": 5000,
+        "isSold": false
+      }
+    ],
+    "tags": [
+      {
+        "id": 1,
+        "menuID": 5,
+        "type": "vegetarianism",
+        "name": "페스코베지테리언"
+      }
+    ]
+  }
+}
+```
+
+### 👉 상품 수정(이름, 설명)
+
+1. 헤더로 받은 토큰으로 관리자 계정인지 확인합니다.
+2. 검증 후, 상품의 이름과 설명을 수정합니다.
+
 - Method: PUT
+
+```
+http://3.36.59.83:8000/products/1
+```
+
+- header : Bearer token
+
+- parameter : request_body
+```
+{
+    "name" : "딸기 샐러드",
+    "description": "아주 맛있는 딸기 샐러드"
+}
+```
+
+- response
+```
+{
+    "menu name": "딸기 샐러드", 
+    "menu desc": "아주 맛있는 딸기 샐러드"
+    }
+```
+
+### 👉 아이템 수정(가격, 사이즈) 
+
+1. 헤더로 받은 토큰으로 관리자 계정인지 확인합니다.
+2. 검증 후, 상품의 가격과 사이즈를 수정합니다.
+
+- Method: PUT
+
 ```
 http://3.36.59.83:8000/item/1
 ```
+
+- header : Bearer token
+
+- parameter : request_body
+```
+{
+    "price": 3000,
+    "size": "M"
+}
+```
+
+- response
+```
+{
+    "item price": 3000, 
+    "item size": "M"
+}
+```
+
+### 👉 상품 삭제
+
+1. 헤더로 받은 토큰으로 관리자 계정인지 확인합니다.
+2. 검증 후, path parameter로 받은 상품을 삭제합니다.
+
+- Method: DELETE
+
+```
+http://3.36.59.83:8000/products/1
+```
+
+- header : Bearer token
+
 - parameter : path_parameter
 
+- response
+```
+{
+  "message": "망고 샐러드 has successfully deleted",
+  "result": "1 rows has affected"
+}
+```
 
-# 설치 및 실행 방법
+# 🔖 설치 및 실행 방법
+
 ### 로컬 및 테스트용
 1. 해당 프로젝트를 clone하고, 프로젝트로 들어간다.
 ```
@@ -161,14 +417,14 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-### 로컬 및 테스트용
+### 배포 및 테스트용
 ```
 docker build -t <docker 계정명>/<이미지명>:<버전> .
 ```
 
-<hr>
+<br>
 
-# 디렉토리 구조
+# 🌲 디렉토리 구조
 ```
 .
 ├── config
@@ -217,9 +473,4 @@ docker build -t <docker 계정명>/<이미지명>:<버전> .
 ├── requirements.txt
 ```
 
-<hr>
-
-
-
-
-
+<br>
